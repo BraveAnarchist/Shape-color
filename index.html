@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dom Project</title>
+    <style>
+        .wrapper {
+            height: 100vh;
+            display:flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .circle{
+            height:150px;
+            width:150px;
+            border-radius: 50%;
+            background-color: aqua;
+            margin-bottom: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+        .shape{
+            clip-path: polygon(25% 0%, 75% 0, 100% 25%, 50% 100%, 50% 100%, 0 24%);
+            background-color: azure;
+            height:70px;
+            width: 70px;
+        }
+        button{
+            min-width: 110px;
+            margin:10px;
+        }
+        
+    </style>
+</head>
+<body>
+    <div class="wrapper">
+        <div class="circle">
+            <div class="shape">
+            </div>
+        </div>
+        <button id="colour">Change Color</button>
+        <button>Change shape</button>
+    </div>
+    <script>
+        const hex =[0,1,2,3,4,5,6,7,8,9,"a","b","c","d","e","f"];
+        let color="#";
+        document.querySelector("#colour").addEventListener("click",()=>{
+            color="#";
+            for(let i=0;i<6;i++)
+                color+=hex[Math.floor(Math.random()*16)];
+            document.querySelector(".shape").style.cssText=`background-color:${color};`;
+        });
+        let previousShape = "";
+        const shapes = ["triangle", "square", "circle", "rectangle", "diamond"];
+
+        document.querySelectorAll("button")[1].addEventListener("click", () => {
+            let newShape;
+            do {
+                newShape = shapes[Math.floor(Math.random() * shapes.length)];
+            } while (newShape === previousShape);
+            document.querySelector(".shape").style.clipPath = getClipPath(newShape);
+            previousShape = newShape; 
+        });
+
+        function getClipPath(shape) {
+            switch (shape) {
+                case "triangle":
+                    return "polygon(50% 0%, 0% 100%, 100% 100%)";
+                case "square":
+                    return "polygon(0 0, 100% 0, 100% 100%, 0 100%)";
+                case "circle":
+                    return "circle(50% at 50% 50%)";
+                case "rectangle":
+                    return "polygon(0 13%, 100% 13%, 100% 85%, 0 86%)";
+                case "diamond":
+                    return "polygon(25% 0%, 75% 0, 100% 25%, 50% 100%, 0 25%)";
+                default:
+                    return "polygon(50% 0%, 0% 100%, 100% 100%)"; 
+            }
+        }
+
+    </script>
+</body>
+</html>
